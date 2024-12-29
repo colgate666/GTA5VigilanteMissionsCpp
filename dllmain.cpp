@@ -1,6 +1,6 @@
 // dllmain.cpp : Defines the entry point for the DLL application.
 #include "pch.h"
-#include "SHV SDK/main.h"
+#include "inc/main.h"
 #include "Script.hpp"
 #include "UIScript.hpp"
 

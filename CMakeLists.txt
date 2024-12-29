@@ -35,8 +35,9 @@ set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
 
 # Add include directories (equivalent to "Additional Include Directories" in VS)
 target_include_directories(VigilanteMissionsCpp PRIVATE
-        "${CMAKE_CURRENT_SOURCE_DIR}/SVH SDK"
+        ${CMAKE_CURRENT_SOURCE_DIR}/inc
         ${CMAKE_CURRENT_SOURCE_DIR}/nlohmann
+        ${CMAKE_CURRENT_SOURCE_DIR}/GTAVMenuBase
 )
 
 # Link against specific .lib files

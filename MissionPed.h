@@ -1,8 +1,8 @@
 ﻿#pragma once
 
-#include "SHV SDK/natives.h"
-#include "SHV SDK/types.h"
-#include "SHV SDK/enums.h"
+#include "inc/natives.h"
+#include "inc/types.h"
+#include "inc/enums.h"
 #include "Blip.hpp"
 
 struct MissionPed {

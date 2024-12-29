@@ -1,34 +1,15 @@
 #pragma once
 
-#include "SHV SDK/natives.h"
+#include "inc/natives.h"
 #include <string>
 
 namespace MUSIC
 {
-	enum class TrackGroups : int
-	{
-		SurvivalPrimary,
-		BusinessBattle,
-		BikerContracts,
-		Casino,
-		Casino2,
-		Tuner,
-		Hacker,
-		SurvivalZombies
-	};
-
-	struct MusicData
-	{
-		static TrackGroups currentTrackGroup;
-		static bool finalWaveHI;
-	};
-
-	void PrepareTracks(int forced = -1);
+	void MissionFailedSound();
 	void StopTrack();
 	void StartTrack();
 	void LowIntensityTrack();
-	void Process(int enemyCount, int maxCount);
+	void MidIntensityTrack();
+	void HighIntensityTrack();
 	void MissionCompletedSound();
-	void FinalWaveMusic();
-	void FinalWaveMusicHighIntensity();
 }

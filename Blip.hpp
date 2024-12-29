@@ -1,8 +1,8 @@
 #pragma once
 
-#include "SHV SDK/natives.h"
-#include "SHV SDK/enums.h"
-#include "SHV SDK/types.h"
+#include "inc/natives.h"
+#include "inc/enums.h"
+#include "inc/types.h"
 
 namespace BLIPS
 {
@@ -14,4 +14,6 @@ namespace BLIPS
 	void DeleteBlipForEntity(Entity entity);
 	void CreateForEnemyPed(Ped ped, int sprite, const char* name);
 	void SetBlipName(Blip blip, const char* name);
+	Blip CreateForEntity(Entity ped, eBlipColor color, int sprite, const char* name);
+	Blip CreateForEntity(Entity ped, eBlipColor color, const char* name);
 }

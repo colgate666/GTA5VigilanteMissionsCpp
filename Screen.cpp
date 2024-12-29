@@ -396,3 +396,10 @@ void SCREEN::FreeScaleform(int handle)
 {
 	GRAPHICS::SET_SCALEFORM_MOVIE_AS_NO_LONGER_NEEDED(&handle);
 }
+
+void SCREEN::ShowTextMessage(const char* sender, const char* title, const char* body)
+{
+	HUD::BEGIN_TEXT_COMMAND_THEFEED_POST("STRING");
+	HUD::ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME(body);
+	HUD::END_TEXT_COMMAND_THEFEED_POST_MESSAGETEXT(sender, sender, false, 0, sender, title);
+}

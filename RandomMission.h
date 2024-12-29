@@ -1,11 +1,12 @@
 ﻿#pragma once
 
-#include "SHV SDK/natives.h"
-#include "SHV SDK/types.h"
+#include "inc/natives.h"
+#include "inc/types.h"
 #include "Utils.h"
 #include "MissionPed.h"
 #include "Script.hpp"
 #include "Screen.hpp"
+#include "Music.hpp"
 
 namespace RANDOM_MISSION {
     enum eMissionType {

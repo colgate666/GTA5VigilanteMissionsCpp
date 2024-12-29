@@ -48,6 +48,27 @@ void BLIPS::CreateForEnemyPed(const Ped ped, const int sprite, const char* name)
 	SetBlipName(blipHandle, name);
 }
 
+Blip BLIPS::CreateForEntity(const Entity ped, const eBlipColor color, const int sprite, const char* name)
+{
+	const Blip blipHandle = HUD::ADD_BLIP_FOR_ENTITY(ped);
+	HUD::SET_BLIP_SPRITE(blipHandle, sprite);
+	HUD::SET_BLIP_SCALE(blipHandle, 0.8f);
+	HUD::SET_BLIP_COLOUR(blipHandle, color);
+	SetBlipName(blipHandle, name);
+
+	return blipHandle;
+}
+
+Blip BLIPS::CreateForEntity(const Entity ped, const eBlipColor color, const char* name)
+{
+	const Blip blipHandle = HUD::ADD_BLIP_FOR_ENTITY(ped);
+	HUD::SET_BLIP_SCALE(blipHandle, 0.8f);
+	HUD::SET_BLIP_COLOUR(blipHandle, color);
+	SetBlipName(blipHandle, name);
+
+	return blipHandle;
+}
+
 void BLIPS::CreateForEnemyVehicle(const Vehicle vehicle)
 {
 	Blip blipHandle = HUD::ADD_BLIP_FOR_ENTITY(vehicle);

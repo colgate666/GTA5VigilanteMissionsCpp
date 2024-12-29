@@ -1,7 +1,7 @@
 #pragma once
-#include <types.h>
-#include <enums.h>
-#include <nativeCaller.h>
+#include "types.h"
+#include "enums.h"
+#include "nativeCaller.h"
 
 // Generated on 12/16/2024, 4:00:06 PM
 // https://nativedb.dotindustries.dev

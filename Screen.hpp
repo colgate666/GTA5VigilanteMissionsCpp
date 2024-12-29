@@ -1,7 +1,7 @@
 #pragma once
 
-#include "SHV SDK/main.h"
-#include "SHV SDK/natives.h"
+#include "inc/main.h"
+#include "inc/natives.h"
 #include "Script.hpp"
 #include <string>
 
@@ -24,4 +24,5 @@ namespace SCREEN
 	void FreeScaleform(int handle);
 	void SetScaleformTextPassed(int scaleform, const char* title, const char* subtitle);
     std::vector<int> LoadWallStat(int cash, int wave, int milis, bool passed, bool doCash, bool isWave, bool time);
+	void ShowTextMessage(const char* sender, const char* title, const char* body);
 }

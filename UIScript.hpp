@@ -1,7 +1,7 @@
 #pragma once
 
-#include "SHV SDK/main.h"
-#include "SHV SDK/natives.h"
+#include "inc/main.h"
+#include "inc/natives.h"
 #include "Screen.hpp"
 
 namespace UIScript

@@ -1,8 +1,8 @@
 #pragma once
 
-#include "SHV SDK/natives.h"
-#include "SHV SDK/types.h"
-#include "SHV SDK/enums.h"
+#include "inc/natives.h"
+#include "inc/types.h"
+#include "inc/enums.h"
 #include "Screen.hpp"
 #include <map>
 #include <vector>
@@ -10,6 +10,7 @@
 
 struct MissionState {
     static bool active;
+    static int type;
 };
 
 static Hash RELATIONSHIP_MISSION_LIKE;
