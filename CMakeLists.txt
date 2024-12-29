@@ -35,6 +35,10 @@ add_library(VigilanteMissionsCpp SHARED
         ${MENU_BASE_SOURCES}
 )
 
+set_target_properties(VigilanteMissionsCpp PROPERTIES
+        SUFFIX ".asi"
+)
+
 # Enable precompiled headers
 target_precompile_headers(VigilanteMissionsCpp PRIVATE
         pch.h
