@@ -1,3 +1,6 @@
 [submodule "GTAVMenuBase"]
 	path = GTAVMenuBase
 	url = https://github.com/ikt32/GTAVMenuBase
+[submodule "simpleini"]
+	path = simpleini
+	url = https://github.com/brofield/simpleini

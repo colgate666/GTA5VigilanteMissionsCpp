@@ -70,7 +70,7 @@ void MissionPed::Process() {
     const Vector3 pedCoords = ENTITY::GET_ENTITY_COORDS(this->ped, true);
     const Vector3 playerCoords = ENTITY::GET_ENTITY_COORDS(PLAYER::PLAYER_PED_ID(), false);
 
-    if (!this->isFollowing && SYSTEM::VDIST2(pedCoords.x, pedCoords.y, pedCoords.z, playerCoords.x, playerCoords.y, playerCoords.z) <= 8.5f) {
+    if (!this->isFollowing && SYSTEM::VDIST2(pedCoords, playerCoords) <= 8.5f) {
         Hash currentWeapon;
 
         if (const bool gotWeapon = WEAPON::GET_CURRENT_PED_WEAPON(PLAYER::PLAYER_PED_ID(), &currentWeapon, true); gotWeapon && currentWeapon != WeaponUnarmed) {
@@ -88,10 +88,10 @@ void MissionPed::Process() {
         this->timerStarted = true;
         this->timerStart = MISC::GET_GAME_TIMER();
     }
-    else if (this->isFollowing && SYSTEM::VDIST2(pedCoords.x, pedCoords.y, pedCoords.z, playerCoords.x, playerCoords.y, playerCoords.z) >= 12) {
+    else if (this->isFollowing && SYSTEM::VDIST2(pedCoords, playerCoords) >= 12) {
         TASK::CLEAR_PED_TASKS(this->ped);
         const char* scenario = SCENARIOS[MISC::GET_RANDOM_INT_IN_RANGE(0, 8)];
-        TASK::TASK_START_SCENARIO_AT_POSITION(this->ped, scenario, this->originalPosition.x, this->originalPosition.y, this->originalPosition.z, this->originalRotation, -1, false, false);
+        TASK::TASK_START_SCENARIO_AT_POSITION(this->ped, scenario, this->originalPosition, this->originalRotation, -1, false, false);
         this->isInScenario = true;
         this->isFollowing = false;
         this->timerStarted = false;

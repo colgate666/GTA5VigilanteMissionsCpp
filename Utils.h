@@ -1,7 +1,8 @@
 ﻿#pragma once
 
+#include <corecrt_math_defines.h>
 #include <cmath>
-#include <bits/random.h>
+#include <random>
 #include "inc/types.h"
 
 namespace VECTORS {
@@ -10,9 +11,8 @@ namespace VECTORS {
     }
 
     static void Normalize(Vector3& v) {
-        float length = Length(v);
-        if (length > 0) {
-            float invLength = 1.0f / length;
+        if (const float length = Length(v); length > 0) {
+            const float invLength = 1.0f / length;
             v.x *= invLength;
             v.y *= invLength;
             v.z *= invLength;
@@ -24,8 +24,8 @@ namespace VECTORS {
         static std::mt19937 gen(rd());
         static std::uniform_real_distribution<float> dis(0, 2.0f * M_PI);
 
-        float radian = dis(gen);
-        Vector3 v = {0};
+        const float radian = dis(gen);
+        Vector3 v = {0, 0, 0};
         v.x = std::cos(radian);
         v.y = std::sin(radian);
         v.z = 0.0f;
@@ -34,7 +34,7 @@ namespace VECTORS {
     }
 
     static Vector3 Add(const Vector3& a, const Vector3& b) {
-        Vector3 result = {0};
+        Vector3 result = {0, 0, 0};
         result.x = a.x + b.x;
         result.y = a.y + b.y;
         result.z = a.z + b.z;
@@ -42,7 +42,7 @@ namespace VECTORS {
     }
 
     static Vector3 Multiply(const Vector3& v, const float scalar) {
-        Vector3 result = {0};
+        Vector3 result = {0, 0 , 0};
         result.x = v.x * scalar;
         result.y = v.y * scalar;
         result.z = v.z * scalar;

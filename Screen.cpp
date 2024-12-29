@@ -37,10 +37,10 @@ void DrawSprite(float x, float y, bool red)
     if (!GRAPHICS::HAS_STREAMED_TEXTURE_DICT_LOADED("timerbars"))
         SCREEN::LoadSprites();
 
-    GRAPHICS::DRAW_SPRITE("timerbars", "all_black_bg", x, y, 0.15f, 0.045f, 0, 0, 0, 0, 150, 0, 0);
+    GRAPHICS::DRAW_SPRITE("timerbars", "all_black_bg", {x, y}, 0.15f, 0.045f, 0, 0, 0, 0, 150, 0, 0);
 
     if (red)
-        GRAPHICS::DRAW_SPRITE("timerbars", "all_red_bg", x, y, 0.15f, 0.045f, 0, 165, 15, 1, 150, 0, 0);
+        GRAPHICS::DRAW_SPRITE("timerbars", "all_red_bg", {x, y}, 0.15f, 0.045f, 0, 165, 15, 1, 150, 0, 0);
 }
 
 void DrawSpriteText(float x, float y, float scale, const char* text, bool right)
@@ -53,7 +53,7 @@ void DrawSpriteText(float x, float y, float scale, const char* text, bool right)
         HUD::SET_TEXT_JUSTIFICATION(2);
     }
     HUD::SET_TEXT_SCALE(1.0f, scale);
-    HUD::END_TEXT_COMMAND_DISPLAY_TEXT(x, y, 0);
+    HUD::END_TEXT_COMMAND_DISPLAY_TEXT({x, y}, 0);
 }
 
 void DrawBar(float x, float y, float percentage) {
@@ -65,8 +65,8 @@ void DrawBar(float x, float y, float percentage) {
         offsetPercentage = 0.01f;
 
     float fillOffset = diff - (diff * offsetPercentage);
-    GRAPHICS::DRAW_SPRITE("timerbars", "damagebar_128", x + 0.18f, y + 0.016f, 0.1f, 0.03f, 0, 0, 0, 0, 255, 1, 0);
-    GRAPHICS::DRAW_SPRITE("timerbars", "damagebarfill_128", x + 0.18f - fillOffset, y + 0.016f, barWidth, 0.029f, 0, 255, 255, 255, 255, 1, 0);
+    GRAPHICS::DRAW_SPRITE("timerbars", "damagebar_128", {x + 0.18f, y + 0.016f}, 0.1f, 0.03f, 0, 0, 0, 0, 255, 1, 0);
+    GRAPHICS::DRAW_SPRITE("timerbars", "damagebarfill_128", {x + 0.18f - fillOffset, y + 0.016f}, barWidth, 0.029f, 0, 255, 255, 255, 255, 1, 0);
 }
 
 void SCREEN::DrawBadge(const char* title, const char* content, bool red, int slot)

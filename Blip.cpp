@@ -9,7 +9,7 @@ void BLIPS::SetBlipName(const Blip blip, const char* name)
 }
 
 Blip BLIPS::Create(const float x, const float y, const float z, const int sprite, const eBlipColor color, const char *name) {
-    const Blip blipHandle = HUD::ADD_BLIP_FOR_COORD(x, y, z);
+    const Blip blipHandle = HUD::ADD_BLIP_FOR_COORD({x, y, z});
     HUD::SET_BLIP_SPRITE(blipHandle, sprite);
     HUD::SET_BLIP_COLOUR(blipHandle, color);
     SetBlipName(blipHandle, name);
@@ -19,7 +19,7 @@ Blip BLIPS::Create(const float x, const float y, const float z, const int sprite
 }
 
 Blip BLIPS::CreateObjectiveBlip(const Vector3 &position, const char *name) {
-	const Blip blipHandle = HUD::ADD_BLIP_FOR_COORD(position.x, position.y, position.z);
+	const Blip blipHandle = HUD::ADD_BLIP_FOR_COORD(position);
 	HUD::SET_BLIP_COLOUR(blipHandle, BlipColorYellow);
 	SetBlipName(blipHandle, name);
 	HUD::SET_BLIP_AS_SHORT_RANGE(blipHandle, true);

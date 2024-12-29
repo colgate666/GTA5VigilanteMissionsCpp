@@ -179,7 +179,7 @@ static const std::vector<Vector3> FLEECA_LOCATIONS = {
     Vector3(1175.124f, 2701.105f, 37.17781f)
 };
 
-static constexpr auto PACIFIC_LOCATION = Vector3(224.4161f, 208.0313f, 104.5419f);
+static auto PACIFIC_LOCATION = Vector3(224.4161f, 208.0313f, 104.5419f);
 
 static auto BANK_ROBBER_NAME = "MP_G_M_Pros_01";
 
@@ -297,7 +297,7 @@ Ped CreateMissionEntity(const std::vector<const char*>& modelPool, const Vector3
     }
 
     const Vector3 approximateLocation = VECTORS::Around(location, 2);
-    const Ped ped = PED::CREATE_PED(0, model, approximateLocation.x, approximateLocation.y, approximateLocation.z, 0, false, true);
+    const Ped ped = PED::CREATE_PED(0, model, approximateLocation, 0, false, true);
 
     STREAMING::SET_MODEL_AS_NO_LONGER_NEEDED(model);
 
@@ -331,7 +331,7 @@ void CreateGroupOfCriminals(std::vector<MissionPed>* group, const Vector3& locat
 
         const Vector3 approximateLocation = VECTORS::Around(location, 5);
         const float heading = MISC::GET_RANDOM_FLOAT_IN_RANGE(0, 351);
-        const Ped ped = PED::CREATE_PED(0, model, approximateLocation.x, approximateLocation.y, approximateLocation.z, heading, false, true);
+        const Ped ped = PED::CREATE_PED(0, model, approximateLocation, heading, false, true);
 
         const auto missionPed = MissionPed(ped, RELATIONSHIP_MISSION_DISLIKE, false, false);
         missionPed.GiveRandomScenario();
@@ -359,7 +359,7 @@ Vehicle CreateVehicle(const Vector3& location) {
     }
 
     const Vector3 approximateLocation = VECTORS::Around(location, 2);
-    const Vehicle vehicle = VEHICLE::CREATE_VEHICLE(model, approximateLocation.x, approximateLocation.y, approximateLocation.z, 0, false, true, false);
+    const Vehicle vehicle = VEHICLE::CREATE_VEHICLE(model, approximateLocation, 0, false, true, false);
 
     STREAMING::SET_MODEL_AS_NO_LONGER_NEEDED(model);
 
@@ -389,7 +389,7 @@ std::vector<Ped> CreateGroupOfCriminals(const Vector3& location) {
         }
 
         const Vector3 approximateLocation = VECTORS::Around(location, 5);
-        const Ped ped = PED::CREATE_PED(0, model, approximateLocation.x, approximateLocation.y, approximateLocation.z, 0, false, true);
+        const Ped ped = PED::CREATE_PED(0, model, approximateLocation, 0, false, true);
 
         peds.push_back(ped);
     }
@@ -416,110 +416,110 @@ void InitFleecaPeds() {
 
     switch (missionData.currentBank) {
         case 0: {
-            Ped ped = PED::CREATE_PED(26, bankRobberModel, -2964.18f, 481.0777f, 15.69693f, 30, false, true);
+            Ped ped = PED::CREATE_PED(26, bankRobberModel, {-2964.18f, 481.0777f, 15.69693f}, 30, false, true);
             missionData.enemies.emplace_back(ped, RELATIONSHIP_MISSION_AGGRESSIVE, false, false);
-            ped = PED::CREATE_PED(26, bankRobberModel, -2963.857f, 484.278f, 15.697f, 126, false, true);
+            ped = PED::CREATE_PED(26, bankRobberModel, {-2963.857f, 484.278f, 15.697f}, 126, false, true);
             missionData.enemies.emplace_back(ped, RELATIONSHIP_MISSION_AGGRESSIVE, false, false);
-            ped = PED::CREATE_PED(26, bankRobberModel, -2958.51f, 477.1414f, 15.69691f, 26, false, true);
+            ped = PED::CREATE_PED(26, bankRobberModel, {-2958.51f, 477.1414f, 15.69691f}, 26, false, true);
             missionData.enemies.emplace_back(ped, RELATIONSHIP_MISSION_AGGRESSIVE, false, false);
-            ped = PED::CREATE_PED(26, bankRobberModel, -2957.031f, 480.7106f, 15.70944f, 9.649f, false, true);
+            ped = PED::CREATE_PED(26, bankRobberModel, {-2957.031f, 480.7106f, 15.70944f}, 9.649f, false, true);
             missionData.enemies.emplace_back(ped, RELATIONSHIP_MISSION_AGGRESSIVE, false, false);
-            ped = PED::CREATE_PED(26, bankRobberModel, -2964.271f, 477.429f, 15.69697f, -7.861f, false, true);
+            ped = PED::CREATE_PED(26, bankRobberModel, {-2964.271f, 477.429f, 15.69697f}, -7.861f, false, true);
             missionData.enemies.emplace_back(ped, RELATIONSHIP_MISSION_AGGRESSIVE, false, false);
 
-            ped = PED::CREATE_PED(26, firstHostage, -2960.853f, 481.0599f, 15.69693f, 95.13f, false, true);
+            ped = PED::CREATE_PED(26, firstHostage, {-2960.853f, 481.0599f, 15.69693f}, 95.13f, false, true);
             missionData.hostages.emplace_back(ped, RELATIONSHIP_MISSION_PEDESTRIAN, true, false);
-            ped = PED::CREATE_PED(26, secondHostage, -2960.613f, 483.9062f, 15.69703f, 94.10f, false, true);
+            ped = PED::CREATE_PED(26, secondHostage, {-2960.613f, 483.9062f, 15.69703f}, 94.10f, false, true);
             missionData.hostages.emplace_back(ped, RELATIONSHIP_MISSION_PEDESTRIAN, true, false);
             break;
         }
         case 1: {
-            Ped ped = PED::CREATE_PED(26, bankRobberModel, -348.1603f, -49.06974f, 49.03651f, 48.98949f, false, true);
+            Ped ped = PED::CREATE_PED(26, bankRobberModel, {-348.1603f, -49.06974f, 49.03651f}, 48.98949f, false, true);
             missionData.enemies.emplace_back(ped, RELATIONSHIP_MISSION_AGGRESSIVE, false, false);
-            ped = PED::CREATE_PED(26, bankRobberModel, -352.2792f, -47.55939f, 49.03641f, -66.99968f, false, true);
+            ped = PED::CREATE_PED(26, bankRobberModel, {-352.2792f, -47.55939f, 49.03641f}, -66.99968f, false, true);
             missionData.enemies.emplace_back(ped, RELATIONSHIP_MISSION_AGGRESSIVE, false, false);
-            ped = PED::CREATE_PED(26, bankRobberModel, -355.5144f, -47.00598f, 49.03641f, -103.9994f, false, true);
+            ped = PED::CREATE_PED(26, bankRobberModel, {-355.5144f, -47.00598f, 49.03641f}, -103.9994f, false, true);
             missionData.enemies.emplace_back(ped, RELATIONSHIP_MISSION_AGGRESSIVE, false, false);
-            ped = PED::CREATE_PED(26, bankRobberModel, -357.8593f, -52.98608f, 49.0364f, -49.93279f, false, true);
+            ped = PED::CREATE_PED(26, bankRobberModel, {-357.8593f, -52.98608f, 49.0364f}, -49.93279f, false, true);
             missionData.enemies.emplace_back(ped, RELATIONSHIP_MISSION_AGGRESSIVE, false, false);
-            ped = PED::CREATE_PED(26, bankRobberModel, -353.8931f, -54.31932f, 49.04078f, -91.17307f, false, true);
+            ped = PED::CREATE_PED(26, bankRobberModel, {-353.8931f, -54.31932f, 49.04078f}, -91.17307f, false, true);
             missionData.enemies.emplace_back(ped, RELATIONSHIP_MISSION_AGGRESSIVE, false, false);
 
-            ped = PED::CREATE_PED(26, firstHostage, -350.4429f, -51.97402f, 49.03652f, -3.043174f, false, true);
+            ped = PED::CREATE_PED(26, firstHostage, {-350.4429f, -51.97402f, 49.03652f}, -3.043174f, false, true);
             missionData.hostages.emplace_back(ped, RELATIONSHIP_MISSION_PEDESTRIAN, true, false);
-            ped = PED::CREATE_PED(26, secondHostage, -352.5433f, -51.1286f, 49.03647f, 1.822526f, false, true);
+            ped = PED::CREATE_PED(26, secondHostage, {-352.5433f, -51.1286f, 49.03647f}, 1.822526f, false, true);
             missionData.hostages.emplace_back(ped, RELATIONSHIP_MISSION_PEDESTRIAN, true, false);
             break;
         }
         case 2: {
-            Ped ped = PED::CREATE_PED(26, bankRobberModel, 311.6597f, -276.2448f, 54.1646f, -74.00441f, false, true);
+            Ped ped = PED::CREATE_PED(26, bankRobberModel, {311.6597f, -276.2448f, 54.1646f}, -74.00441f, false, true);
             missionData.enemies.emplace_back(ped, RELATIONSHIP_MISSION_AGGRESSIVE, false, false);
-            ped = PED::CREATE_PED(26, bankRobberModel, 316.7694f, -278.3633f, 54.16472f, 30.99782f, false, true);
+            ped = PED::CREATE_PED(26, bankRobberModel, {316.7694f, -278.3633f, 54.16472f}, 30.99782f, false, true);
             missionData.enemies.emplace_back(ped, RELATIONSHIP_MISSION_AGGRESSIVE, false, false);
-            ped = PED::CREATE_PED(26, bankRobberModel, 307.5851f, -281.2281f, 54.16462f, -51.94263f, false, true);
+            ped = PED::CREATE_PED(26, bankRobberModel, {307.5851f, -281.2281f, 54.16462f}, -51.94263f, false, true);
             missionData.enemies.emplace_back(ped, RELATIONSHIP_MISSION_AGGRESSIVE, false, false);
-            ped = PED::CREATE_PED(26, bankRobberModel, 309.4192f, -276.0536f, 54.16466f, -101.5581f, false, true);
+            ped = PED::CREATE_PED(26, bankRobberModel, {309.4192f, -276.0536f, 54.16466f}, -101.5581f, false, true);
             missionData.enemies.emplace_back(ped, RELATIONSHIP_MISSION_AGGRESSIVE, false, false);
-            ped = PED::CREATE_PED(26, bankRobberModel, 310.9105f, -283.3813f, 54.17715f, -102.6255f, false, true);
+            ped = PED::CREATE_PED(26, bankRobberModel, {310.9105f, -283.3813f, 54.17715f}, -102.6255f, false, true);
             missionData.enemies.emplace_back(ped, RELATIONSHIP_MISSION_AGGRESSIVE, false, false);
 
-            ped = PED::CREATE_PED(26, firstHostage, 314.4158f, -281.3477f, 54.16473f, 21.91808f, false, true);
+            ped = PED::CREATE_PED(26, firstHostage, {314.4158f, -281.3477f, 54.16473f}, 21.91808f, false, true);
             missionData.hostages.emplace_back(ped, RELATIONSHIP_MISSION_PEDESTRIAN, true, false);
-            ped = PED::CREATE_PED(26, secondHostage, 312.0094f, -280.3156f, 54.16463f, -7.192459f, false, true);
+            ped = PED::CREATE_PED(26, secondHostage, {312.0094f, -280.3156f, 54.16463f}, -7.192459f, false, true);
             missionData.hostages.emplace_back(ped, RELATIONSHIP_MISSION_PEDESTRIAN, true, false);
             break;
         }
         case 3: {
-            Ped ped = PED::CREATE_PED(26, bankRobberModel, -1215.184f, -330.0213f, 37.78087f, -15.79769f, false, true);
+            Ped ped = PED::CREATE_PED(26, bankRobberModel, {-1215.184f, -330.0213f, 37.78087f}, -15.79769f, false, true);
             missionData.enemies.emplace_back(ped, RELATIONSHIP_MISSION_AGGRESSIVE, false, false);
-            ped = PED::CREATE_PED(26, bankRobberModel, -1211.406f, -328.4123f, 37.78097f, 66.99969f, false, true);
+            ped = PED::CREATE_PED(26, bankRobberModel, {-1211.406f, -328.4123f, 37.78097f}, 66.99969f, false, true);
             missionData.enemies.emplace_back(ped, RELATIONSHIP_MISSION_AGGRESSIVE, false, false);
-            ped = PED::CREATE_PED(26, bankRobberModel, -1217.893f, -331.9763f, 37.78086f, -48.88696f, false, true);
+            ped = PED::CREATE_PED(26, bankRobberModel, {-1217.893f, -331.9763f, 37.78086f}, -48.88696f, false, true);
             missionData.enemies.emplace_back(ped, RELATIONSHIP_MISSION_AGGRESSIVE, false, false);
-            ped = PED::CREATE_PED(26, bankRobberModel, -1215.417f, -337.4013f, 37.78086f, -5.066119E-07f, false, true);
+            ped = PED::CREATE_PED(26, bankRobberModel, {-1215.417f, -337.4013f, 37.78086f}, -5.066119E-07f, false, true);
             missionData.enemies.emplace_back(ped, RELATIONSHIP_MISSION_AGGRESSIVE, false, false);
-            ped = PED::CREATE_PED(26, bankRobberModel, -1211.546f, -336.2029f, 37.79304f, -33.99992f, false, true);
+            ped = PED::CREATE_PED(26, bankRobberModel, {-1211.546f, -336.2029f, 37.79304f}, -33.99992f, false, true);
             missionData.enemies.emplace_back(ped, RELATIONSHIP_MISSION_AGGRESSIVE, false, false);
 
-            ped = PED::CREATE_PED(26, firstHostage, -1210.526f, -331.9603f, 37.78099f, 36.9999f, false, true);
+            ped = PED::CREATE_PED(26, firstHostage, {-1210.526f, -331.9603f, 37.78099f}, 36.9999f, false, true);
             missionData.hostages.emplace_back(ped, RELATIONSHIP_MISSION_PEDESTRIAN, true, false);
-            ped = PED::CREATE_PED(26, secondHostage, -1212.919f, -333.1217f, 37.78091f, 17.99998f, false, true);
+            ped = PED::CREATE_PED(26, secondHostage, {-1212.919f, -333.1217f, 37.78091f}, 17.99998f, false, true);
             missionData.hostages.emplace_back(ped, RELATIONSHIP_MISSION_PEDESTRIAN, true, false);
             break;
         }
         case 4: {
-            Ped ped = PED::CREATE_PED(26, bankRobberModel, 152.3929f, -1039.924f, 29.36801f, 47.60934f, false, true);
+            Ped ped = PED::CREATE_PED(26, bankRobberModel, {152.3929f, -1039.924f, 29.36801f}, 47.60934f, false, true);
             missionData.enemies.emplace_back(ped, RELATIONSHIP_MISSION_AGGRESSIVE, false, false);
-            ped = PED::CREATE_PED(26, bankRobberModel, 147.5129f, -1038.305f, 29.36789f, -73.00114f, false, true);
+            ped = PED::CREATE_PED(26, bankRobberModel, {147.5129f, -1038.305f, 29.36789f}, -73.00114f, false, true);
             missionData.enemies.emplace_back(ped, RELATIONSHIP_MISSION_AGGRESSIVE, false, false);
-            ped = PED::CREATE_PED(26, bankRobberModel, 143.2488f, -1043.078f, 29.3679f, -42.98598f, false, true);
+            ped = PED::CREATE_PED(26, bankRobberModel, {143.2488f, -1043.078f, 29.3679f}, -42.98598f, false, true);
             missionData.enemies.emplace_back(ped, RELATIONSHIP_MISSION_AGGRESSIVE, false, false);
-            ped = PED::CREATE_PED(26, bankRobberModel, 145.0282f, -1037.781f, 29.36794f, -92.99951f, false, true);
+            ped = PED::CREATE_PED(26, bankRobberModel, {145.0282f, -1037.781f, 29.36794f}, -92.99951f, false, true);
             missionData.enemies.emplace_back(ped, RELATIONSHIP_MISSION_AGGRESSIVE, false, false);
-            ped = PED::CREATE_PED(26, bankRobberModel, 146.5712f, -1045.173f, 29.38041f, -110.8552f, false, true);
+            ped = PED::CREATE_PED(26, bankRobberModel, {146.5712f, -1045.173f, 29.38041f}, -110.8552f, false, true);
             missionData.enemies.emplace_back(ped, RELATIONSHIP_MISSION_AGGRESSIVE, false, false);
 
-            ped = PED::CREATE_PED(26, firstHostage, 147.9353f, -1042.076f, 29.36794f, 0.0002265055f, false, true);
+            ped = PED::CREATE_PED(26, firstHostage, {147.9353f, -1042.076f, 29.36794f}, 0.0002265055f, false, true);
             missionData.hostages.emplace_back(ped, RELATIONSHIP_MISSION_PEDESTRIAN, true, false);
-            ped = PED::CREATE_PED(26, secondHostage, 149.421f, -1042.728f, 29.36801f, 1.072878f, false, true);
+            ped = PED::CREATE_PED(26, secondHostage, {149.421f, -1042.728f, 29.36801f}, 1.072878f, false, true);
             missionData.hostages.emplace_back(ped, RELATIONSHIP_MISSION_PEDESTRIAN, true, false);
             break;
         }
         default: {
-            Ped ped = PED::CREATE_PED(26, bankRobberModel, 1173.477f, 2705.483f, 38.08796f, -119.4031f, false, true);
+            Ped ped = PED::CREATE_PED(26, bankRobberModel, {1173.477f, 2705.483f, 38.08796f}, -119.4031f, false, true);
             missionData.enemies.emplace_back(ped, RELATIONSHIP_MISSION_AGGRESSIVE, false, false);
-            ped = PED::CREATE_PED(26, bankRobberModel, 1177.076f, 2705.032f, 38.08787f, 120.9997f, false, true);
+            ped = PED::CREATE_PED(26, bankRobberModel, {1177.076f, 2705.032f, 38.08787f}, 120.9997f, false, true);
             missionData.enemies.emplace_back(ped, RELATIONSHIP_MISSION_AGGRESSIVE, false, false);
-            ped = PED::CREATE_PED(26, bankRobberModel, 1180.469f, 2705.364f, 38.08789f, 79.99958f, false, true);
+            ped = PED::CREATE_PED(26, bankRobberModel, {1180.469f, 2705.364f, 38.08789f}, 79.99958f, false, true);
             missionData.enemies.emplace_back(ped, RELATIONSHIP_MISSION_AGGRESSIVE, false, false);
-            ped = PED::CREATE_PED(26, bankRobberModel, 1180.707f, 2711.697f, 38.08786f, 104.9145f, false, true);
+            ped = PED::CREATE_PED(26, bankRobberModel, {1180.707f, 2711.697f, 38.08786f}, 104.9145f, false, true);
             missionData.enemies.emplace_back(ped, RELATIONSHIP_MISSION_AGGRESSIVE, false, false);
-            ped = PED::CREATE_PED(26, bankRobberModel, 1176.749f, 2711.792f, 38.10051f, 83.0192f, false, true);
+            ped = PED::CREATE_PED(26, bankRobberModel, {1176.749f, 2711.792f, 38.10051f}, 83.0192f, false, true);
             missionData.enemies.emplace_back(ped, RELATIONSHIP_MISSION_AGGRESSIVE, false, false);
 
-            ped = PED::CREATE_PED(26, firstHostage, 1175.03f, 2708.574f, 38.08796f, 170.949f, false, true);
+            ped = PED::CREATE_PED(26, firstHostage, {1175.03f, 2708.574f, 38.08796f}, 170.949f, false, true);
             missionData.hostages.emplace_back(ped, RELATIONSHIP_MISSION_PEDESTRIAN, true, false);
-            ped = PED::CREATE_PED(26, secondHostage, 1176.591f, 2708.643f, 38.08788f, -166.713f, false, true);
+            ped = PED::CREATE_PED(26, secondHostage, {1176.591f, 2708.643f, 38.08788f}, -166.713f, false, true);
             missionData.hostages.emplace_back(ped, RELATIONSHIP_MISSION_PEDESTRIAN, true, false);
             break;
         }
@@ -605,7 +605,7 @@ void InitPacificPeds() {
     models.insert(bankRobberModel);
 
     for (const auto& [x, y, z, rotation] : bankRobberSpawns) {
-        Ped ped = PED::CREATE_PED(26, bankRobberModel, x, y, z, rotation, false, true);
+        Ped ped = PED::CREATE_PED(26, bankRobberModel, {x, y, z}, rotation, false, true);
         missionData.enemies.emplace_back(ped, RELATIONSHIP_MISSION_AGGRESSIVE, false, true);
 
         PED::SET_PED_COMBAT_MOVEMENT(ped, 1);
@@ -626,7 +626,7 @@ void InitPacificPeds() {
             models.insert(model);
         }
 
-        Ped ped = PED::CREATE_PED(26, model, x, y, z, rotation, false, true);
+        Ped ped = PED::CREATE_PED(26, model, {x, y, z}, rotation, false, true);
         missionData.hostages.emplace_back(ped, RELATIONSHIP_MISSION_PEDESTRIAN, true, false);
 
         TASK::TASK_HANDS_UP(ped, 1800000, 0, 0, 0);
@@ -646,7 +646,7 @@ void InitPacificPeds() {
             models.insert(model);
         }
 
-        Ped ped = PED::CREATE_PED(26, model, x, y, z, rotation, false, true);
+        Ped ped = PED::CREATE_PED(26, model, {x, y, z}, rotation, false, true);
         missionData.police.emplace_back(ped, MISC::GET_HASH_KEY("COP"), false, false);
 
         PED::SET_PED_COMBAT_MOVEMENT(ped, 1);
@@ -666,7 +666,7 @@ void InitPacificPeds() {
             models.insert(model);
         }
 
-        const Vehicle vehicle = VEHICLE::CREATE_VEHICLE(model, x, y, z, rotation, false, true, false);
+        const Vehicle vehicle = VEHICLE::CREATE_VEHICLE(model, {x, y, z}, rotation, false, true, false);
         VEHICLE::SET_VEHICLE_SIREN(vehicle, true);
         VEHICLE::SET_VEHICLE_HAS_MUTED_SIRENS(vehicle, true);
 
@@ -826,7 +826,7 @@ void ResetState() {
 void RANDOM_MISSION::Start(const eMissionType type) {
     missionData.missionType = type;
     missionData.currentObjective = 0;
-    const Vector3 playerCoords = ENTITY::GET_ENTITY_COORDS(PLAYER::PLAYER_PED_ID());
+    const Vector3 playerCoords = ENTITY::GET_ENTITY_COORDS(PLAYER::PLAYER_PED_ID(), true);
 
     switch (missionData.missionType) {
         case FleecaBankRobbery: {
@@ -834,7 +834,7 @@ void RANDOM_MISSION::Start(const eMissionType type) {
 
             do {
                 missionData.objectiveLocation = FLEECA_LOCATIONS[missionData.currentBank];
-            } while (SYSTEM::VDIST2(missionData.objectiveLocation.x, missionData.objectiveLocation.y, missionData.objectiveLocation.z, playerCoords.x, playerCoords.y, playerCoords.z) <= 200);
+            } while (SYSTEM::VDIST2(missionData.objectiveLocation, playerCoords) <= 200);
 
             MUSIC::StartTrack();
             break;
@@ -872,7 +872,7 @@ void RANDOM_MISSION::Process() {
 
     switch (missionData.currentObjective) {
         case 0: {
-            if (const Vector3 playerCoords = ENTITY::GET_ENTITY_COORDS(PLAYER::PLAYER_PED_ID()); SYSTEM::VDIST2(missionData.objectiveLocation.x, missionData.objectiveLocation.y, missionData.objectiveLocation.z, playerCoords.x, playerCoords.y, playerCoords.z) <= 200) {
+            if (const Vector3 playerCoords = ENTITY::GET_ENTITY_COORDS(PLAYER::PLAYER_PED_ID(), true); SYSTEM::VDIST2(missionData.objectiveLocation, playerCoords) <= 200) {
                 SpawnMissionPeds();
                 missionData.currentObjective = 1;
                 HUD::REMOVE_BLIP(&missionData.objectiveBlip);
@@ -920,13 +920,13 @@ void RANDOM_MISSION::Process() {
                     missionData.shootRange = MISC::GET_RANDOM_INT_IN_RANGE(15, 41);
                 }
 
-                const Vector3 shooterCoords = ENTITY::GET_ENTITY_COORDS(shooter);
-                const Vector3 playerCoords = ENTITY::GET_ENTITY_COORDS(PLAYER::PLAYER_PED_ID());
+                const Vector3 shooterCoords = ENTITY::GET_ENTITY_COORDS(shooter, true);
+                const Vector3 playerCoords = ENTITY::GET_ENTITY_COORDS(PLAYER::PLAYER_PED_ID(), true);
 
-                if (bool playerInRange = SYSTEM::VDIST2(shooterCoords.x, shooterCoords.y, shooterCoords.z, playerCoords.x, playerCoords.y, playerCoords.z) < missionData.shootRange; playerInRange && !missionData.timerStarted) {
+                if (bool playerInRange = SYSTEM::VDIST2(shooterCoords, playerCoords) < missionData.shootRange; playerInRange && !missionData.timerStarted) {
                     missionData.startTime = MISC::GET_GAME_TIMER();
                     missionData.timerStarted = true;
-                    AUDIO::PLAY_PED_AMBIENT_SPEECH_NATIVE(shooter, "GENERIC_INSULT_HIGH", "SPEECH_PARAMS_SHOUTED_CLEAR");
+                    AUDIO::PLAY_PED_AMBIENT_SPEECH_NATIVE(shooter, "GENERIC_INSULT_HIGH", "SPEECH_PARAMS_SHOUTED_CLEAR", 0);
                 }
                 else if (!playerInRange && missionData.timerStarted) {
                     missionData.timerStarted = false;

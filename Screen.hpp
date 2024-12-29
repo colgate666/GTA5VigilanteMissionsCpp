@@ -4,6 +4,7 @@
 #include "inc/natives.h"
 #include "Script.hpp"
 #include <string>
+#include <vector>
 
 namespace SCREEN
 {
