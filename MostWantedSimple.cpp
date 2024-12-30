@@ -237,6 +237,7 @@ void MOST_WANTED_SIMPLE::Quit(const bool playerDied) {
         STATS::STAT_SET_INT(statName, money + 1000, true);
 
         PLAYER::SET_PLAYER_WANTED_LEVEL(PLAYER::PLAYER_ID(), 2, false);
+        SCREEN::ShowTextMessage("CHAR_LESTER", "Most Wanted Suspect", "Good job, your cut of the reward is already in your account.");
     }
 
     ResetState();
