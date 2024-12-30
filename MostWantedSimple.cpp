@@ -139,6 +139,14 @@ bool MOST_WANTED_SIMPLE::RemoveDeadEnemies() {
 }
 
 void MOST_WANTED_SIMPLE::Process() {
+    if (PLAYER::IS_PLAYER_DEAD(PLAYER::PLAYER_ID())) {
+        Quit(true);
+        return;
+    }
+
+    PLAYER::CLEAR_PLAYER_WANTED_LEVEL(PLAYER::PLAYER_ID());
+    PLAYER::SET_PLAYER_WANTED_LEVEL_NOW(PLAYER::PLAYER_ID(), false);
+
     switch (missionData.currentObjective) {
         case 0: {
             if (const Vector3 playerCoords = ENTITY::GET_ENTITY_COORDS(PLAYER::PLAYER_PED_ID(), true); MISC::GET_DISTANCE_BETWEEN_COORDS(playerCoords, missionData.objectiveLocation, false) <= 200) {
@@ -170,12 +178,25 @@ void MOST_WANTED_SIMPLE::Process() {
             }
 
             if (missionData.enemies.empty()) {
-                Quit(false);
+                PLAYER::SET_PLAYER_WANTED_LEVEL(PLAYER::PLAYER_ID(), 3, false);
+                PLAYER::SET_PLAYER_WANTED_LEVEL_NOW(PLAYER::PLAYER_ID(), false);
+                MUSIC::MidIntensityTrack();
+                missionData.currentObjective = 2;
                 return;
             }
 
             for (MissionPed& enemy : missionData.enemies) {
                 enemy.Process();
+            }
+
+            break;
+        }
+        case 2: {
+            SCREEN::ShowSubtitle("Lose the cops.", 100);
+
+            if (PLAYER::GET_PLAYER_WANTED_LEVEL(PLAYER::PLAYER_ID()) < 1) {
+                Quit(false);
+                return;
             }
 
             break;
@@ -240,7 +261,6 @@ void MOST_WANTED_SIMPLE::Quit(const bool playerDied) {
         STATS::STAT_GET_INT(statName, &money, -1);
         STATS::STAT_SET_INT(statName, money + 1000, true);
 
-        PLAYER::SET_PLAYER_WANTED_LEVEL(PLAYER::PLAYER_ID(), 2, false);
         SCREEN::ShowTextMessage("CHAR_LESTER", "Lester", "Wanted Suspect", "Good job, your cut of the reward is already in your account.");
     }
 

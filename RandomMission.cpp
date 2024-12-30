@@ -859,6 +859,7 @@ void RANDOM_MISSION::Process() {
     }
 
     PLAYER::CLEAR_PLAYER_WANTED_LEVEL(PLAYER::PLAYER_ID());
+    PLAYER::SET_PLAYER_WANTED_LEVEL_NOW(PLAYER::PLAYER_ID(), false);
 
     switch (missionData.currentObjective) {
         case 0: {
