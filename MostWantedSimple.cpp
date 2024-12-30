@@ -19,7 +19,7 @@ void MOST_WANTED_SIMPLE::Start(const eMostWantedTarget target) {
         }
     }
 
-    if (const Vector3 playerCoords = ENTITY::GET_ENTITY_COORDS(PLAYER::PLAYER_PED_ID(), true); MISC::GET_DISTANCE_BETWEEN_COORDS(playerCoords, missionData.objectiveLocation, false) <= 200) {
+    if (const Vector3 playerCoords = ENTITY::GET_ENTITY_COORDS(PLAYER::PLAYER_PED_ID(), true); MISC::GET_DISTANCE_BETWEEN_COORDS(playerCoords, missionData.objectiveLocation, false) <= 600) {
         SCREEN::ShowNotification("Mission not available");
         return;
     }
@@ -28,7 +28,7 @@ void MOST_WANTED_SIMPLE::Start(const eMostWantedTarget target) {
     missionData.objectiveBlip = BLIPS::CreateObjectiveBlip(missionData.objectiveLocation, blipName);
     missionData.currentObjective = 0;
     missionData.intensityIncreased = false;
-    SCREEN::ShowTextMessage("CHAR_LESTER", "Wanted Suspect", lesterMessage);
+    SCREEN::ShowTextMessage("CHAR_LESTER", "Lester", "Wanted Suspect", lesterMessage);
     MissionState::active = true;
     MissionState::type = 1;
 }
@@ -174,6 +174,10 @@ void MOST_WANTED_SIMPLE::Process() {
                 return;
             }
 
+            for (MissionPed& enemy : missionData.enemies) {
+                enemy.Process();
+            }
+
             break;
         }
     }
@@ -237,7 +241,7 @@ void MOST_WANTED_SIMPLE::Quit(const bool playerDied) {
         STATS::STAT_SET_INT(statName, money + 1000, true);
 
         PLAYER::SET_PLAYER_WANTED_LEVEL(PLAYER::PLAYER_ID(), 2, false);
-        SCREEN::ShowTextMessage("CHAR_LESTER", "Most Wanted Suspect", "Good job, your cut of the reward is already in your account.");
+        SCREEN::ShowTextMessage("CHAR_LESTER", "Lester", "Wanted Suspect", "Good job, your cut of the reward is already in your account.");
     }
 
     ResetState();

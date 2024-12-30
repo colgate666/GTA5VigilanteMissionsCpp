@@ -25,5 +25,5 @@ namespace SCREEN
 	void FreeScaleform(int handle);
 	void SetScaleformTextPassed(int scaleform, const char* title, const char* subtitle);
     std::vector<int> LoadWallStat(int cash, int wave, int milis, bool passed, bool doCash, bool isWave, bool time);
-	void ShowTextMessage(const char* sender, const char* title, const char* body);
+	void ShowTextMessage(const char* icon, const char* sender, const char* title, const char* body);
 }
