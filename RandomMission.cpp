@@ -729,10 +729,13 @@ void SpawnMissionPeds() {
 
             const auto missionPed = MissionPed(shooter, RELATIONSHIP_MISSION_MASS_SHOOTER, false, false);
 
-            TASK::TASK_COMBAT_HATED_TARGETS_AROUND_PED(shooter, 150, 0);
+            PED::REGISTER_HATED_TARGETS_AROUND_PED(shooter, 500);
+            TASK::TASK_SWAP_WEAPON(shooter, 1);
+
             BLIPS::CreateForEnemyPed(shooter, BlipSpriteEnemy, "Shooter");
 
             missionData.enemies.push_back(missionPed);
+            break;
         }
         case RANDOM_MISSION::StolenVehicle: {
             const Vehicle vehicle = CreateVehicle(missionData.objectiveLocation);
@@ -754,6 +757,7 @@ void SpawnMissionPeds() {
 
             missionData.vehicles.push_back(vehicle);
             missionData.enemies.push_back(missionPed);
+            break;
         }
         case RANDOM_MISSION::SuspectOnTheRun: {
             const Ped criminal = CreateCriminal(missionData.objectiveLocation);
@@ -776,7 +780,7 @@ void SpawnMissionPeds() {
 void RemoveDeadEnemies() {
     for (size_t i = 0; i < missionData.enemies.size(); i++)
     {
-        const MissionPed enemy = missionData.enemies.at(i);
+        MissionPed& enemy = missionData.enemies.at(i);
 
         if (!PED::IS_PED_DEAD_OR_DYING(enemy.ped, 1))
         {
@@ -789,6 +793,7 @@ void RemoveDeadEnemies() {
         }
 
         enemy.RemoveBlip();
+        enemy.Delete();
 
         missionData.enemies.erase(missionData.enemies.begin() + i);
         break;
@@ -812,9 +817,14 @@ void ResetState() {
         ENTITY::SET_VEHICLE_AS_NO_LONGER_NEEDED(&vehicle);
     }
 
+    for (MissionPed& cop : missionData.police) {
+        cop.Delete();
+    }
+
     missionData.enemies.clear();
     missionData.hostages.clear();
     missionData.vehicles.clear();
+    missionData.police.clear();
     missionData.currentBank = 0;
     missionData.currentObjective = 0;
     missionData.actionTaken = false;
@@ -834,7 +844,7 @@ void RANDOM_MISSION::Start(const eMissionType type) {
 
             do {
                 missionData.objectiveLocation = FLEECA_LOCATIONS[missionData.currentBank];
-            } while (SYSTEM::VDIST2(missionData.objectiveLocation, playerCoords) <= 200);
+            } while (MISC::GET_DISTANCE_BETWEEN_COORDS(missionData.objectiveLocation, playerCoords, false) <= 200);
 
             MUSIC::StartTrack();
             break;
@@ -872,11 +882,27 @@ void RANDOM_MISSION::Process() {
 
     switch (missionData.currentObjective) {
         case 0: {
-            if (const Vector3 playerCoords = ENTITY::GET_ENTITY_COORDS(PLAYER::PLAYER_PED_ID(), true); SYSTEM::VDIST2(missionData.objectiveLocation, playerCoords) <= 200) {
+            const Vector3 playerCoords = ENTITY::GET_ENTITY_COORDS(PLAYER::PLAYER_PED_ID(), true);
+
+            if (MISC::GET_DISTANCE_BETWEEN_COORDS(missionData.objectiveLocation, playerCoords, false) <= 350) {
                 SpawnMissionPeds();
                 missionData.currentObjective = 1;
                 HUD::REMOVE_BLIP(&missionData.objectiveBlip);
-                MUSIC::MidIntensityTrack();
+
+                if (missionData.missionType == FleecaBankRobbery || missionData.missionType == PacificBankRobbery) {
+                    MUSIC::MidIntensityTrack();
+                }
+
+                if (missionData.missionType == PacificBankRobbery) {
+                    const Hash doorHash = MISC::GET_HASH_KEY("PACIFIC_TELLER_DOOR_VIGILANTE");
+                    const Hash modelHash = MISC::GET_HASH_KEY("hei_v_ilev_bk_gate_pris");
+
+                    if (!OBJECT::IS_DOOR_REGISTERED_WITH_SYSTEM(doorHash)) {
+                        OBJECT::ADD_DOOR_TO_SYSTEM(doorHash, modelHash, {256.3116, 220.6579, 106.4296}, false, false, false, 0);
+                    }
+
+                    OBJECT::SET_STATE_OF_CLOSEST_DOOR_OF_TYPE(doorHash, {256.3116, 220.6579, 106.4296}, false, 1, 0);
+                }
             } else {
                 SCREEN::ShowSubtitle("Go to the ~y~crime scene~w~.", 100);
             }
@@ -923,7 +949,7 @@ void RANDOM_MISSION::Process() {
                 const Vector3 shooterCoords = ENTITY::GET_ENTITY_COORDS(shooter, true);
                 const Vector3 playerCoords = ENTITY::GET_ENTITY_COORDS(PLAYER::PLAYER_PED_ID(), true);
 
-                if (bool playerInRange = SYSTEM::VDIST2(shooterCoords, playerCoords) < missionData.shootRange; playerInRange && !missionData.timerStarted) {
+                if (bool playerInRange = MISC::GET_DISTANCE_BETWEEN_COORDS(shooterCoords, playerCoords, false) < missionData.shootRange; playerInRange && !missionData.timerStarted) {
                     missionData.startTime = MISC::GET_GAME_TIMER();
                     missionData.timerStarted = true;
                     AUDIO::PLAY_PED_AMBIENT_SPEECH_NATIVE(shooter, "GENERIC_INSULT_HIGH", "SPEECH_PARAMS_SHOUTED_CLEAR", 0);

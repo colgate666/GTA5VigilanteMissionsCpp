@@ -9,6 +9,18 @@ bool MissionState::active;
 int MissionState::type;
 NativeMenu::Menu menu;
 
+bool calculateCrimes;
+int firstCrime;
+int secondCrime;
+int thirdCrime;
+
+Hash RELATIONSHIP_MISSION_LIKE;
+Hash RELATIONSHIP_MISSION_NEUTRAL;
+Hash RELATIONSHIP_MISSION_AGGRESSIVE;
+Hash RELATIONSHIP_MISSION_PEDESTRIAN;
+Hash RELATIONSHIP_MISSION_DISLIKE;
+Hash RELATIONSHIP_MISSION_MASS_SHOOTER;
+
 std::array<const char*, 7> missionNames = {
     "Stolen Vehicle",
     "Assault",
@@ -60,29 +72,47 @@ void ReadConfig() {
     PED::SET_RELATIONSHIP_BETWEEN_GROUPS(RelationshipHate, RELATIONSHIP_MISSION_MASS_SHOOTER, mPedRelGroup);
 }
 
+bool canStartPacific() {
+    const Vector3 playerCoords = ENTITY::GET_ENTITY_COORDS(PLAYER::PLAYER_PED_ID(), true);
+
+    return MISC::GET_DISTANCE_BETWEEN_COORDS(playerCoords, {224.4161f, 208.0313f, 104.5419f}, false) >= 1500;
+}
+
 void menuTick() {
     menu.CheckKeys();
 
     if (menu.CurrentMenu("mainmenu")) {
         menu.Title("Police Computer");
         menu.Subtitle("Los Santos Police");
-        menu.MenuOption("Current Crimes", "random", { "Ongoing crimes" });
+
+        if (menu.MenuOption("Current Crimes", "random", { "Ongoing crimes" })) {
+            calculateCrimes = true;
+        }
     }
     else if (menu.CurrentMenu("random")) {
         menu.Title("Current Crimes");
         menu.Subtitle("Los Santos Police");
 
-        const int firstCrime = MISC::GET_RANDOM_INT_IN_RANGE(0, 6);
-        int secondCrime = MISC::GET_RANDOM_INT_IN_RANGE(0, 6);
+        if (calculateCrimes) {
+            const bool canStartPacificRobbery = canStartPacific();
+            calculateCrimes = false;
+            firstCrime = MISC::GET_RANDOM_INT_IN_RANGE(0, 7);
 
-        while (secondCrime != firstCrime) {
-            secondCrime = MISC::GET_RANDOM_INT_IN_RANGE(0, 6);
-        }
+            while (firstCrime == RANDOM_MISSION::eMissionType::PacificBankRobbery && !canStartPacificRobbery) {
+                firstCrime = MISC::GET_RANDOM_INT_IN_RANGE(0, 7);
+            }
 
-        int thirdCrime = MISC::GET_RANDOM_INT_IN_RANGE(0, 6);
+            secondCrime = MISC::GET_RANDOM_INT_IN_RANGE(0, 7);
 
-        while (thirdCrime != firstCrime && thirdCrime != secondCrime) {
-            thirdCrime = MISC::GET_RANDOM_INT_IN_RANGE(0, 6);
+            while ((secondCrime == RANDOM_MISSION::eMissionType::PacificBankRobbery && !canStartPacificRobbery) || secondCrime == firstCrime) {
+                secondCrime = MISC::GET_RANDOM_INT_IN_RANGE(0, 7);
+            }
+
+            thirdCrime = MISC::GET_RANDOM_INT_IN_RANGE(0, 7);
+
+            while ((thirdCrime == RANDOM_MISSION::eMissionType::PacificBankRobbery && !canStartPacificRobbery) || thirdCrime == firstCrime || thirdCrime == secondCrime) {
+                thirdCrime = MISC::GET_RANDOM_INT_IN_RANGE(0, 7);
+            }
         }
 
         if (menu.Option(missionNames[firstCrime])) {
@@ -110,8 +140,9 @@ void menuTick() {
     }
 
     ReadConfig();
+    menu.ReadSettings();
 
-    while (true) {
+    for (;;) {
         menuTick();
 
         if (MissionState::active) {
@@ -119,13 +150,22 @@ void menuTick() {
                 RANDOM_MISSION::Process();
             }
         }
-        else if (!menu.IsThisOpen() && !MISC::GET_MISSION_FLAG() && PED::IS_PED_IN_ANY_POLICE_VEHICLE(PLAYER::PLAYER_PED_ID())) {
+        else if (!menu.IsThisOpen() && !MISC::GET_MISSION_FLAG() && PED::IS_PED_IN_ANY_POLICE_VEHICLE(PLAYER::PLAYER_PED_ID()) && PLAYER::GET_PLAYER_WANTED_LEVEL(PLAYER::PLAYER_ID()) < 1) {
             if (const Vehicle currentVehicle = PED::GET_VEHICLE_PED_IS_IN(PLAYER::PLAYER_PED_ID(), false); VEHICLE::IS_VEHICLE_STOPPED(currentVehicle)) {
                 SCREEN::ShowHelpText("Press ~INPUT_CONTEXT~ to access the police computer", true);
 
                 if (PAD::IS_CONTROL_JUST_PRESSED(0, 51)) {
                     menu.OpenMenu();
                 }
+            }
+        }
+
+        if (menu.IsThisOpen()) {
+            if (!PED::IS_PED_IN_ANY_POLICE_VEHICLE(PLAYER::PLAYER_PED_ID())) {
+                menu.CloseMenu();
+            }
+            else if (const Vehicle currentVehicle = PED::GET_VEHICLE_PED_IS_IN(PLAYER::PLAYER_PED_ID(), false); !VEHICLE::IS_VEHICLE_STOPPED(currentVehicle)) {
+                menu.CloseMenu();
             }
         }
 
@@ -139,5 +179,9 @@ void ScriptMain() {
 }
 
 void OnAbort() {
-
+    if (MissionState::active) {
+        if (MissionState::type == 0) {
+            RANDOM_MISSION::Quit(true);
+        }
+    }
 }

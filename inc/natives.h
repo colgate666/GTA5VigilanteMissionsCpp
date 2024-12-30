@@ -23824,7 +23824,7 @@ namespace OBJECT
   // get door info: https://pastebin.com/i14rbekD
   //  
   // https://nativedb.dotindustries.dev/natives/0xF82D8F1926A02C3D
-  static void SET_STATE_OF_CLOSEST_DOOR_OF_TYPE(unsigned type, Vector3 vec, BOOL locked, float heading, BOOL p6)
+  static void SET_STATE_OF_CLOSEST_DOOR_OF_TYPE(Hash type, Vector3 vec, BOOL locked, float heading, BOOL p6)
   {
     invoke<int>(0xF82D8F1926A02C3D, type, vec.x, vec.y, vec.z, locked, heading, p6);
   } // 0xF82D8F1926A02C3D 0x38C951A4 b323
@@ -23866,7 +23866,7 @@ namespace OBJECT
   // Example: AddDoorToSystem("PROP_43_DOOR_0", "hei_v_ilev_fh_heistdoor2", -1456.818, -520.5037, 69.67043, 0, 0, 0)
   //  
   // https://nativedb.dotindustries.dev/natives/0x6F8838D03D1DC226
-  static void ADD_DOOR_TO_SYSTEM(unsigned doorHash, unsigned modelHash, Vector3 vec, BOOL p5, BOOL scriptDoor, BOOL isLocal, Any p8)
+  static void ADD_DOOR_TO_SYSTEM(Hash doorHash, Hash modelHash, Vector3 vec, BOOL p5, BOOL scriptDoor, BOOL isLocal, Any p8)
   {
     invoke<int>(0x6F8838D03D1DC226, doorHash, modelHash, vec.x, vec.y, vec.z, p5, scriptDoor, isLocal, p8);
   } // 0x6F8838D03D1DC226 0x9D2D778D b323

@@ -44,6 +44,9 @@ eWeapon GetRandomWeapon() {
 
 MissionPed::MissionPed(const Ped ped, Hash relGroup, const bool civilian, const bool track): isFollowing(false), isInScenario(false), timerStarted(false), timerStart(0) {
     this->ped = ped;
+
+    PED::SET_PED_RELATIONSHIP_GROUP_HASH(this->ped, relGroup);
+
     this->track = !civilian && track && PED::GET_RELATIONSHIP_BETWEEN_PEDS(this->ped, PLAYER::PLAYER_PED_ID()) == RelationshipNeutral;
     this->originalPosition = ENTITY::GET_ENTITY_COORDS(ped, true);
     this->originalRotation = ENTITY::GET_ENTITY_HEADING(ped);
@@ -70,7 +73,7 @@ void MissionPed::Process() {
     const Vector3 pedCoords = ENTITY::GET_ENTITY_COORDS(this->ped, true);
     const Vector3 playerCoords = ENTITY::GET_ENTITY_COORDS(PLAYER::PLAYER_PED_ID(), false);
 
-    if (!this->isFollowing && SYSTEM::VDIST2(pedCoords, playerCoords) <= 8.5f) {
+    if (!this->isFollowing && MISC::GET_DISTANCE_BETWEEN_COORDS(pedCoords, playerCoords, false) <= 8.5f) {
         Hash currentWeapon;
 
         if (const bool gotWeapon = WEAPON::GET_CURRENT_PED_WEAPON(PLAYER::PLAYER_PED_ID(), &currentWeapon, true); gotWeapon && currentWeapon != WeaponUnarmed) {
@@ -88,7 +91,7 @@ void MissionPed::Process() {
         this->timerStarted = true;
         this->timerStart = MISC::GET_GAME_TIMER();
     }
-    else if (this->isFollowing && SYSTEM::VDIST2(pedCoords, playerCoords) >= 12) {
+    else if (this->isFollowing && MISC::GET_DISTANCE_BETWEEN_COORDS(pedCoords, playerCoords, false) >= 12) {
         TASK::CLEAR_PED_TASKS(this->ped);
         const char* scenario = SCENARIOS[MISC::GET_RANDOM_INT_IN_RANGE(0, 8)];
         TASK::TASK_START_SCENARIO_AT_POSITION(this->ped, scenario, this->originalPosition, this->originalRotation, -1, false, false);
