@@ -840,7 +840,7 @@ void RANDOM_MISSION::Start(const eMissionType type) {
 
     switch (missionData.missionType) {
         case FleecaBankRobbery: {
-            missionData.currentBank = MISC::GET_RANDOM_INT_IN_RANGE(0, 5);
+            missionData.currentBank = MISC::GET_RANDOM_INT_IN_RANGE(0, 6);
 
             do {
                 missionData.objectiveLocation = FLEECA_LOCATIONS[missionData.currentBank];
@@ -902,6 +902,50 @@ void RANDOM_MISSION::Process() {
                     }
 
                     OBJECT::SET_STATE_OF_CLOSEST_DOOR_OF_TYPE(doorHash, {256.3116, 220.6579, 106.4296}, false, 1, 0);
+                }
+                else if (missionData.missionType == FleecaBankRobbery) {
+                    Hash doorHash;
+                    Vector3 doorCoords;
+                    const Hash modelHash = MISC::GET_HASH_KEY("v_ilev_genbankdoor1");
+
+                    switch (missionData.currentBank) {
+                        case 0: {
+                            doorCoords = {-2965.821, 481.6297, 16.04816};
+                            doorHash = MISC::GET_HASH_KEY("FLEECA_DOOR_0_VIGILANTE");
+                            break;
+                        }
+                        case 1: {
+                            doorCoords = {-351.2598, -46.41221, 49.38765};
+                            doorHash = MISC::GET_HASH_KEY("FLEECA_DOOR_1_VIGILANTE");
+                            break;
+                        }
+                        case 2: {
+                            doorCoords = {313.9587, -275.5965, 54.51586};
+                            doorHash = MISC::GET_HASH_KEY("FLEECA_DOOR_2_VIGILANTE");
+                            break;
+                        }
+                        case 3: {
+                            doorCoords = {-1215.386, -328.5237, 38.13211};
+                            doorHash = MISC::GET_HASH_KEY("FLEECA_DOOR_3_VIGILANTE");
+                            break;
+                        }
+                        case 4: {
+                            doorCoords = {149.6298, -1037.231, 29.71915};
+                            doorHash = MISC::GET_HASH_KEY("FLEECA_DOOR_4_VIGILANTE");
+                            break;
+                        }
+                        default: {
+                            doorCoords = {1176.495, 2703.613, 38.43911};
+                            doorHash = MISC::GET_HASH_KEY("FLEECA_DOOR_5_VIGILANTE");
+                            break;
+                        }
+                    }
+
+                    if (!OBJECT::IS_DOOR_REGISTERED_WITH_SYSTEM(doorHash)) {
+                        OBJECT::ADD_DOOR_TO_SYSTEM(doorHash, modelHash, doorCoords, false, false, false, 0);
+                    }
+
+                    OBJECT::SET_STATE_OF_CLOSEST_DOOR_OF_TYPE(doorHash, doorCoords, false, 1, 0);
                 }
             } else {
                 SCREEN::ShowSubtitle("Go to the ~y~crime scene~w~.", 100);
