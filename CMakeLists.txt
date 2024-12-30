@@ -33,6 +33,8 @@ add_library(VigilanteMissionsCpp SHARED
         MissionPed.h
         MissionPed.cpp
         ${MENU_BASE_SOURCES}
+        MostWantedSimple.h
+        MostWantedSimple.cpp
 )
 
 set_target_properties(VigilanteMissionsCpp PROPERTIES

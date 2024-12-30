@@ -19,7 +19,27 @@ namespace RANDOM_MISSION {
         FleecaBankRobbery
     };
 
+    struct MissionData {
+        eMissionType missionType;
+        int currentObjective = 0;
+        int currentBank = 0;
+        Blip objectiveBlip = 0;
+        Vector3 objectiveLocation;
+        int actionToTake;
+        int shootRange;
+        bool actionTaken = false;
+        int startTime;
+        bool timerStarted = false;
+        bool actionStarted = false;
+        std::vector<MissionPed> enemies = {};
+        std::vector<MissionPed> hostages = {};
+        std::vector<MissionPed> police = {};
+        std::vector<Vehicle> vehicles = {};
+    };
+
     void Start(eMissionType type);
     void Process();
     void Quit(bool playerDied);
+    void ResetState();
+    void RemoveDeadEnemies();
 }

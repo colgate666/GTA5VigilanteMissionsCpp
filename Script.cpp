@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "Script.hpp"
 #include "json.hpp"
+#include "MostWantedSimple.h"
 #include "RandomMission.h"
 
 #include "GTAVMenuBase/menu.h"
@@ -88,6 +89,8 @@ void menuTick() {
         if (menu.MenuOption("Current Crimes", "random", { "Ongoing crimes" })) {
             calculateCrimes = true;
         }
+
+        menu.MenuOption("Most Wanted", "mostwanted", { "Most Wanted Criminals" });
     }
     else if (menu.CurrentMenu("random")) {
         menu.Title("Current Crimes");
@@ -130,6 +133,15 @@ void menuTick() {
             menu.CloseMenu();
         }
     }
+    else if (menu.CurrentMenu("mostwanted")) {
+        menu.Title("Current Crimes");
+        menu.Subtitle("Los Santos Police");
+
+        if (menu.Option("Wang Fang")) {
+            MOST_WANTED_SIMPLE::Start(MOST_WANTED_SIMPLE::WangFang);
+            menu.CloseMenu();
+        }
+    }
 
     menu.EndMenu();
 }
@@ -148,6 +160,8 @@ void menuTick() {
         if (MissionState::active) {
             if (MissionState::type == 0) {
                 RANDOM_MISSION::Process();
+            } else {
+                MOST_WANTED_SIMPLE::Process();
             }
         }
         else if (!menu.IsThisOpen() && !MISC::GET_MISSION_FLAG() && PED::IS_PED_IN_ANY_POLICE_VEHICLE(PLAYER::PLAYER_PED_ID()) && PLAYER::GET_PLAYER_WANTED_LEVEL(PLAYER::PLAYER_ID()) < 1) {
@@ -182,6 +196,9 @@ void OnAbort() {
     if (MissionState::active) {
         if (MissionState::type == 0) {
             RANDOM_MISSION::Quit(true);
+        }
+        else {
+            MOST_WANTED_SIMPLE::Quit(true);
         }
     }
 }

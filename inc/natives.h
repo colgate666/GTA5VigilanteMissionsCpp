@@ -25642,7 +25642,7 @@ namespace PED
   // Full list of peds by DurtyFree: https://github.com/DurtyFree/gta-v-data-dumps/blob/master/peds.json
   //  
   // https://nativedb.dotindustries.dev/natives/0xD49F9B0955C367DE
-  static int CREATE_PED(int pedType, unsigned modelHash, Vector3 vec, float heading, BOOL isNetwork, BOOL bScriptHostPed)
+  static int CREATE_PED(int pedType, Hash modelHash, Vector3 vec, float heading, BOOL isNetwork, BOOL bScriptHostPed)
   {
     return invoke<int>(0xD49F9B0955C367DE, pedType, modelHash, vec.x, vec.y, vec.z, heading, isNetwork, bScriptHostPed);
   } // 0xD49F9B0955C367DE 0x0389EF71 b323

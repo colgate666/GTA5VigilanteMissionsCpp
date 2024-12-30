@@ -253,26 +253,7 @@ static const std::vector<const char*> BANK_VEHICLES = {
     "FBI2"
 };
 
-struct MissionData {
-    RANDOM_MISSION::eMissionType missionType;
-    int currentObjective = 0;
-    int currentBank = 0;
-    Blip objectiveBlip = 0;
-    Vector3 objectiveLocation;
-    int actionToTake;
-    int shootRange;
-    bool actionTaken = false;
-    int startTime;
-    bool timerStarted = false;
-    bool actionStarted = false;
-    bool doorsUnlocked = false;
-    std::vector<MissionPed> enemies = {};
-    std::vector<MissionPed> hostages = {};
-    std::vector<MissionPed> police = {};
-    std::vector<Vehicle> vehicles = {};
-};
-
-auto missionData = MissionData();
+auto missionData = RANDOM_MISSION::MissionData();
 
 Vector3 GetRandomLocation(const eLocationType type) {
     if (type == Foot) {
@@ -777,7 +758,7 @@ void SpawnMissionPeds() {
     }
 }
 
-void RemoveDeadEnemies() {
+void RANDOM_MISSION::RemoveDeadEnemies() {
     for (size_t i = 0; i < missionData.enemies.size(); i++)
     {
         MissionPed& enemy = missionData.enemies.at(i);
@@ -800,7 +781,7 @@ void RemoveDeadEnemies() {
     }
 }
 
-void ResetState() {
+void RANDOM_MISSION::ResetState() {
     if (HUD::DOES_BLIP_EXIST(missionData.objectiveBlip)) {
         HUD::REMOVE_BLIP(&missionData.objectiveBlip);
     }
@@ -830,7 +811,6 @@ void ResetState() {
     missionData.actionTaken = false;
     missionData.timerStarted = false;
     missionData.actionStarted = false;
-    missionData.doorsUnlocked = false;
 }
 
 void RANDOM_MISSION::Start(const eMissionType type) {
