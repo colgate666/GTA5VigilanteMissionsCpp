@@ -25,6 +25,7 @@ void MOST_WANTED_SIMPLE::Start(const eMostWantedTarget target) {
     }
 
     MUSIC::StartTrack();
+    AUDIO::SET_AUDIO_FLAG("WantedMusicDisabled", true);
     missionData.objectiveBlip = BLIPS::CreateObjectiveBlip(missionData.objectiveLocation, blipName);
     missionData.currentObjective = 0;
     missionData.intensityIncreased = false;
@@ -144,8 +145,10 @@ void MOST_WANTED_SIMPLE::Process() {
         return;
     }
 
-    PLAYER::CLEAR_PLAYER_WANTED_LEVEL(PLAYER::PLAYER_ID());
-    PLAYER::SET_PLAYER_WANTED_LEVEL_NOW(PLAYER::PLAYER_ID(), false);
+    if (missionData.currentObjective != 2) {
+        PLAYER::CLEAR_PLAYER_WANTED_LEVEL(PLAYER::PLAYER_ID());
+        PLAYER::SET_PLAYER_WANTED_LEVEL_NOW(PLAYER::PLAYER_ID(), false);
+    }
 
     switch (missionData.currentObjective) {
         case 0: {
@@ -242,6 +245,8 @@ void MOST_WANTED_SIMPLE::Quit(const bool playerDied) {
     } else {
         MUSIC::MissionCompletedSound();
     }
+
+    AUDIO::SET_AUDIO_FLAG("WantedMusicDisabled", false);
 
     if (!playerDied) {
         const Hash playerModel = ENTITY::GET_ENTITY_MODEL(PLAYER::PLAYER_PED_ID());
