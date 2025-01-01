@@ -154,6 +154,9 @@ void menuTick() {
     ReadConfig();
     menu.ReadSettings();
 
+    DLC::ON_ENTER_MP();
+    MISC::SET_INSTANCE_PRIORITY_MODE(1);
+
     for (;;) {
         menuTick();
 

@@ -9,7 +9,8 @@
 
 namespace MOST_WANTED_SIMPLE {
     enum eMostWantedTarget {
-        WangFang
+        WangFang,
+        TonyMussolini
     };
 
     struct MissionData {
@@ -22,6 +23,8 @@ namespace MOST_WANTED_SIMPLE {
         std::vector<MissionPed> hostages = {};
         std::vector<MissionPed> police = {};
         std::vector<Vehicle> vehicles = {};
+        bool helicopterStolen = false;
+        bool helicopterAlive = false;
     };
 
     void Process();
